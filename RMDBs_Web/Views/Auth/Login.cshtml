@@ -1,0 +1,14 @@
+﻿@model RMDBs_Web.Models.DTO.LoginRequestDTO
+
+<form asp-action="Login" method="post">
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="UserName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input asp-for="Password" type="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="text-danger">@ViewBag.Error</div>
+</form>

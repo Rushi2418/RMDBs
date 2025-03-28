@@ -1,0 +1,364 @@
+﻿@model MovieDetailsVM
+
+@{
+    ViewData["Title"] = "Movie Details";
+
+    // Extract YouTube Video ID dynamically
+    string videoId = "";
+    string startTime = "";
+
+    if (!string.IsNullOrEmpty(Model.MovieTrailer))
+    {
+        var uri = new Uri(Model.MovieTrailer);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        videoId = query["v"];
+        string timeParam = query["t"];
+        startTime = !string.IsNullOrEmpty(timeParam) ? $"?start={timeParam.TrimEnd('s')}" : "";
+    }
+}
+
+<style>
+    body {
+    background-color: #121212;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    }
+
+    .container {
+    max-width: 1200px;
+    padding: 20px;
+    margin-bottom: 80px; /* Prevent footer overlap */
+    }
+
+    h2#movieTitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3);
+    margin-bottom: 20px;
+    text-align: center;
+    }
+
+    .movie-poster {
+    object-fit: cover;
+    max-height: 400px;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 8px;
+    }
+
+    .movie-poster:hover {
+    transform: scale(1.05);
+    }
+
+    .cast-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    }
+
+    .cast-card {
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    }
+
+    .cast-card:hover {
+    transform: scale(1.05);
+    }
+
+    .cast-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin-right: 10px;
+    }
+
+    .genre-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    }
+
+    .genre-badge:hover {
+    background-color: #ff9800;
+    transform: scale(1.1);
+    }
+
+    .rating-badge {
+    font-size: 1.5rem;
+    background-color: #ff9800;
+    padding: 8px 16px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: bold;
+    }
+
+    .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-height: 400px;
+    margin-top: 20px;
+    }
+
+    .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+
+    }
+
+    .movie-image {
+    width: 100%; /* Ensures uniform width */
+    height: 300px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures images fill the area without distortion */
+    border-radius: 8px;
+    margin: 5px;
+    padding-bottom: 30px;
+    border-radius : 20px;
+    }
+</style>
+
+<div class="container">
+    <h2 id="movieTitle">@Model.MovieName</h2>
+
+    <div class="row mt-4">
+        <!-- Left Side - Poster & Cast -->
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.MovieImage))
+            {
+                <img src="@Url.Content($"~/{Model.MovieImage}")" class="img-fluid movie-poster">
+            }
+            else
+            {
+                <img src="Images/Home/Default.png" alt="Default image" class="img-fluid movie-poster">
+            }
+
+            <!-- Movie Cast Section (Left Side) -->
+            <div class="movie-cast-section mt-4">
+                <h4 class="text-light">Movie Cast</h4>
+                <div class="cast-section">
+                    @if (Model.MovieCasts?.Any() == true)
+                    {
+                        @foreach (var cast in Model.MovieCasts)
+                        {
+                            <a asp-action="ActorDetails" asp-controller="ActorDetails" asp-route-actorId="@cast.ActorID" asp-route-movieId="@Model.MovieID"
+                                class="text-decoration-none text-light cast-card">
+                                @if (!string.IsNullOrEmpty(cast.Img))
+                                {
+                                    <img src="@Url.Content($"~/{cast.Img}")" class="cast-img">
+                                }
+                                else
+                                {
+                                    <img src="~/Images/Home/Default.png" alt="Default image" class="cast-img">
+                                }
+                                <div>
+                                    <h6 class="mb-0 fw-bold">@cast.ActorName</h6>
+                                    <p class="text-muted mb-0">@cast.Role</p>
+                                </div>
+                            </a>
+                        }
+                        if(Model.MovieCasts.Count()>5){
+                            <a asp-action="MovieCrew" asp-controller="Movies" asp-route-id="@Model.MovieID" class="text-primary">
+                                View More
+                            </a>
+
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No cast members available.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Trailer & Details -->
+        <div class="col-md-8">
+            @if (!string.IsNullOrEmpty(videoId))
+            {
+                <div class="video-container">
+                    <iframe width="100%" height="315"
+                            src="https://www.youtube-nocookie.com/embed/@videoId@startTime?rel=0&modestbranding=1&controls=1&showinfo=0"
+                            allowfullscreen allow="autoplay" frameborder="0" loading="lazy">
+                    </iframe>
+                </div>
+            }
+            else
+            {
+                <p class="text-danger">No trailer available.</p>
+            }
+
+            <div class="movie-details mt-4">
+                <p><strong>Release Date:</strong>    @Model.MovieReleaseDate?.ToString("dd-MM-yyyy")</p>
+                <p><strong>Language:</strong> @Model.MovieLanguage</p>
+                <p><strong>Budget:</strong>  @Model.MovieBudget</p>
+
+                <!-- Directors Section -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <strong>Directors:</strong>
+                    @if (Model.Directors?.Any() == true)
+                    {
+                        var directorsToShow = Model.Directors.Take(2).ToList();
+                        foreach (var director in directorsToShow)
+                        {
+                            <a asp-action="ActorDetails" asp-controller="ActorDetails" asp-route-actorId="@director.ActorID" asp-route-movieId="@Model.MovieID">
+                                <span class="badge genre-badge">@director.ActorName</span>
+                            </a>
+                        }
+
+                        if (Model.Directors.Count() > 2)
+                        {
+                            <a asp-action="MovieCrew" asp-controller="Movies" asp-route-movieId="@Model.MovieID" asp-route-type="Directors" class="text-primary">
+                                View More
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Directors available</span>
+                    }
+                </div>
+
+                <!-- Writers Section -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <strong>Writers:</strong>
+                    @if (Model.Writers?.Any() == true)
+                    {
+                        var writersToShow = Model.Writers.Take(2).ToList();
+                        foreach (var writer in writersToShow)
+                        {
+                            <a asp-action="ActorDetails" asp-controller="ActorDetails" asp-route-actorId="@writer.ActorID" asp-route-movieId="@Model.MovieID">
+                                <span class="badge genre-badge">@writer.ActorName</span>
+                            </a>
+                        }
+
+                        if (Model.Writers.Count() > 2)
+                        {
+                            <a asp-action="MovieCrew" asp-controller="Movies" asp-route-movieId="@Model.MovieID" asp-route-type="Writers" class="text-primary">
+                                View More
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Writers available</span>
+                    }
+                </div>
+            </div>
+
+            <div class="container mt-4">
+                <h4 class="mb-3">Award Details</h4>
+                <div class="row">
+                    @if (Model.AwardsDetail?.Any() == true)
+                    {
+                        @foreach (var award in Model.AwardsDetail)
+                        {
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">@award.AwardName</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Year: @award.Year</h6>
+                                        <p class="card-text">
+                                            @if (!string.IsNullOrEmpty(award.AwardDiscription))
+                                            {
+                                                @award.AwardDiscription
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No description available.</span>
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="text-muted">No Awards available.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+              
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    @if (Model.MovieGenre?.Any() == true)
+                    {
+                        @foreach (var genre in Model.MovieGenre)
+                        {
+                            <a asp-controller="Movies" asp-action="MoviesByGenre" asp-route-genreId="@genre.id" >
+                            <span class="badge genre-badge">@genre.GenreName</span>
+                            </a>
+
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No genres available</span>
+                    }
+                </div>
+
+                <p><strong>Description:</strong> @Model.MovieDescription</p>
+
+                <div class="d-flex align-items-center mt-3">
+                    <h5 class="mb-0">Rating:</h5>
+                    <div class="ms-2">
+                        @if (Model.MovieRating != null)
+                        {
+                            <span class="badge rating-badge">⭐ @Model.MovieRating?.ToString("0.0") / 10</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted ms-2">No rating available</span>
+                        }
+                    </div>
+                </div>
+
+                <p class="mt-2"><strong>Review:</strong> @Model.MovieReview</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Movie Images Section -->
+    @if (Model.MovieIMGs != null && Model.MovieIMGs.Any())
+    {
+        <div class="movie-images mt-4">
+            <h4 class="text-light">Additional Movie Images</h4>
+            <div class="d-flex flex-wrap">
+                @foreach (var img in Model.MovieIMGs)
+                {
+                    <div class="p-2">
+                        <img src="@Url.Content($"~/{img.FilePath}")"
+                             alt="Movie image @img.ID"
+                             class="img-fluid movie-image" />
+                    </div>
+
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="text-muted mt-4">No additional images available.</p>
+    }
+  </div>
+

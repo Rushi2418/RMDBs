@@ -1,0 +1,182 @@
+﻿@using RMDBs_Web.Models.ViewModel
+@model List<MovieDetailsWithRatings>
+
+@{
+    ViewData["Title"] = "Movies by Genre";
+}
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/css/Movie.css" rel="stylesheet" type="text/css" />
+    <style>
+        .container-custom {
+            position: relative;
+            padding: 0 60px; /* extra padding for button space */
+        }
+
+        .movie-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 20px;
+            padding: 10px;
+        }
+
+            .movie-container::-webkit-scrollbar {
+                display: none;
+            }
+
+        .card {
+            flex: 0 0 calc(33.33% - 20px);
+            min-width: 300px; /* Adjust based on screen size */
+            position: relative;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            z-index: 5;
+            pointer-events: none; /* Ensure overlay doesn't block clicks */
+        }
+
+        .rating {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 6;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .card-body {
+            position: relative;
+            z-index: 6;
+            padding: 15px;
+        }
+
+        .card-footer {
+            position: relative;
+            z-index: 7; /* Ensure it's above overlay */
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .btn-show-details {
+            position: relative;
+            z-index: 10;
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: red; /* Changed to red */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-show-details:hover {
+                background-color: darkred; /* Adjust hover color */
+            }
+
+        /* Scroll buttons */
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 100; /* Increased z-index */
+        }
+
+        .scroll-left {
+            left: 0;
+        }
+
+        .scroll-right {
+            right: 0;
+        }
+
+        .genre-header {
+            background-color: #dc3545; /* Matching red theme */
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .see-more-btn {
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .col-md-2 {
+            flex: 0 0 20%; /* Ensures five cards per row */
+            max-width: 20%;
+        }
+    </style>
+</head>
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+@if (Model != null && Model.Any())
+{
+<div class="container container-custom py-5">
+  
+    <div class="movie-container" id="withRatings">
+        @foreach (var movie in Model)
+        {
+            <div class="card hover-effect">
+                    <img src="/@Url.Content(movie.FilePath)" class="card-img-top" alt="@movie.Name" style="height: 300px; object-fit: cover;">
+                <div class="gradient-overlay"></div>
+                <div class="rating">
+                    <span class="star-icon">&#9733;</span> @movie.AVGrating.ToString("0.0")
+                </div>
+                <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title">@movie.Name</h5>
+                    <p class="card-text description-text">@movie.Description</p>
+                    <p class="release-date">Release: @movie.ReleaseDate.ToString("MMM dd, yyyy")</p>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieID" class="btn-show-details">
+                        Show Details
+                    </a>
+                        <a href="@movie.TrailerUrl" class="btn btn-primary" target="_blank">🎬 Watch Trailer</a>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        No movies found for the selected genre.
+    </div>
+}
+
+
+                  

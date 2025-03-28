@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDB_Utility", "RMDB_Utility\RMDB_Utility.csproj", "{174F09AC-27AC-420E-B6BE-3BF09DDE24A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDBs_API", "RMDBs_API\RMDBs_API.csproj", "{EE433D29-1850-4D12-8CC2-68A5915DA3E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDBs_Web", "RMDBs_Web\RMDBs_Web.csproj", "{B8BB7B91-C2CA-401C-9697-351192F1E2C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{174F09AC-27AC-420E-B6BE-3BF09DDE24A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{174F09AC-27AC-420E-B6BE-3BF09DDE24A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{174F09AC-27AC-420E-B6BE-3BF09DDE24A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{174F09AC-27AC-420E-B6BE-3BF09DDE24A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE433D29-1850-4D12-8CC2-68A5915DA3E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE433D29-1850-4D12-8CC2-68A5915DA3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE433D29-1850-4D12-8CC2-68A5915DA3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE433D29-1850-4D12-8CC2-68A5915DA3E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BB7B91-C2CA-401C-9697-351192F1E2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BB7B91-C2CA-401C-9697-351192F1E2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BB7B91-C2CA-401C-9697-351192F1E2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BB7B91-C2CA-401C-9697-351192F1E2C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

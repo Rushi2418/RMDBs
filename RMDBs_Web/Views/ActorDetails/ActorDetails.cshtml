@@ -1,0 +1,134 @@
+﻿@using RMDBs_Web.Models.ViewModel
+@model ActorDetailsDTO
+
+@{
+    ViewData["Title"] = "Actor Details";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Left Side - Actor Image & Info -->
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm border-0 actor-card">
+                <div class="card-body">
+                    <img src="@(string.IsNullOrEmpty(Model.ActorImage) ? Url.Content("~/Images/Home/Default.png") : Url.Content(Model.ActorImage.StartsWith("~") ? Model.ActorImage : "~/" + Model.ActorImage))"
+                         class="img-fluid rounded mb-3" style="max-height: 350px; object-fit: cover;">
+                    <h4 class="text-primary">@Model.Name</h4>
+                    <p><strong>Born:</strong> @(Model.BornDate?.ToString("yyyy-MM-dd") ?? "N/A")</p>
+
+                    <p>
+                        <strong>Biography:</strong>
+                        <span id="biography-short">
+                            @(Model.Biography.Length > 200 ? Model.Biography.Substring(0, 200) + "..." : Model.Biography)
+                        </span>
+                        <span id="biography-full" style="display: none;">@Model.Biography</span>
+                        @if (Model.Biography.Length > 200)
+                        {
+                            <a href="javascript:void(0);" id="toggle-bio" class="text-warning">Read more</a>
+                        }
+                    </p>
+
+                    <p><strong>Parents:</strong> @(string.IsNullOrWhiteSpace(Model.Parents) ? "N/A" : Model.Parents)</p>
+                    <p><strong>Children:</strong> @(string.IsNullOrWhiteSpace(Model.Chilldren) ? "N/A" : Model.Chilldren)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Actor Movies -->
+        <div class="col-md-8">
+            <h4 class="mb-3">Movies</h4>
+            <div class="row">
+                @if (Model.Movies?.Any() == true)
+                {
+                    @foreach (var movie in Model.Movies)
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100 movie-card hover-effect">
+                                <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieID" class="btn-show-details">
+                                    <img src="@(string.IsNullOrEmpty(movie.MovieImg) ? Url.Content("~/Images/Home/Default.png") : Url.Content(movie.MovieImg.StartsWith("~") ? movie.MovieImg : "~/" + movie.MovieImg))"
+                                         class="card-img-top movie-img" style="height: 200px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@movie.Name</h5>
+                                        <p class="text-muted">Released: @(movie.ReleaseDate.ToString("yyyy-MM-dd") ?? "Unknown")</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col">
+                        <p class="text-muted">No movies found for this actor.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .actor-card {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .movie-card {
+        transition: transform 0.3s ease-in-out;
+        background: #1c1c1c;
+        color: #fff;
+        border-radius: 10px;
+    }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    .movie-img {
+        border-radius: 10px;
+    }
+
+    .text-primary {
+        color: #ffcc00 !important;
+    }
+
+    .text-muted {
+        color: #ccc !important;
+    }
+
+    body {
+        background-color: #121212;
+        color: #f5f5f5;
+    }
+
+    #biography-full {
+        display: none;
+    }
+
+    #toggle-bio {
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let toggleBtn = document.getElementById("toggle-bio");
+        let shortBio = document.getElementById("biography-short");
+        let fullBio = document.getElementById("biography-full");
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", function () {
+                if (fullBio.style.display === "none") {
+                    fullBio.style.display = "inline";
+                    shortBio.style.display = "none";
+                    this.textContent = "Read less";
+                } else {
+                    fullBio.style.display = "none";
+                    shortBio.style.display = "inline";
+                    this.textContent = "Read more";
+                }
+            });
+        }
+    });
+</script>

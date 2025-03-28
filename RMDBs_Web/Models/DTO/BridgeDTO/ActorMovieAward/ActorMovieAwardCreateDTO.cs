@@ -1,0 +1,41 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RMDBs_Web.Models.DTO
+{
+    public class ActorMovieAwardCreateDTO : IValidatableObject
+    {
+        [Required]
+        public int Typeid { get; set; }
+
+        public int? ActorID { get; set; }
+        public int? MovieID { get; set; }
+
+        [Required]
+        public int AwardID { get; set; }
+
+        [Required]
+        public int AwardCategoryID { get; set; }
+
+        [Required]
+        public int Year { get; set; }
+
+        // Custom validation logic
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Typeid == 1 && ActorID == null)
+            {
+                yield return new ValidationResult("ActorID is required when Typeid is 1.", new[] { nameof(ActorID) });
+            }
+
+            if (Typeid == 2 && MovieID == null)
+            {
+                yield return new ValidationResult("MovieID is required when Typeid is 2.", new[] { nameof(MovieID) });
+            }
+
+            if (Typeid != 1 && Typeid != 2)
+            {
+                yield return new ValidationResult("Typeid must be either 1 (Actor) or 2 (Movie).", new[] { nameof(Typeid) });
+            }
+        }
+    }
+}

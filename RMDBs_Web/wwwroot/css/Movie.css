@@ -1,0 +1,176 @@
+﻿/* Movie Card Styling */
+.card {
+    background-color: #2a2a2a;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 600px; /* Increased height to make the card longer */
+    max-width: 350px; /* Limit width if necessary to keep cards from being too wide */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+}
+
+    /* Hover Effects */
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        background-color: #333;
+    }
+
+/* Movie Poster */
+.card-img-top {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    height: 300px; /* Adjust the height of the image for a longer card */
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .card-img-top {
+    opacity: 0.85;
+}
+
+/* Gradient Overlay for Image */
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, black, transparent);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    z-index: 1;
+}
+
+/* Movie Rating */
+.rating {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #444;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.card:hover .rating {
+    background-color: #555;
+}
+
+.star-icon {
+    color: #ffcc00;
+    margin-right: 0.2rem;
+    font-size: 1.2rem;
+}
+
+/* Movie Details */
+.release-date {
+    color: #ffc107;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.card:hover .release-date {
+    color: #ffcc00;
+}
+
+.card-title {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.card:hover .card-title {
+    color: #80d4ff;
+}
+
+.description-text {
+    color: #d1d1d1;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Allow more lines for description */
+    -webkit-box-orient: vertical;
+    transition: color 0.3s ease;
+}
+
+.card:hover .description-text {
+    color: #e0e0e0;
+}
+
+/* Footer */
+.card-footer {
+    padding: 1rem;
+    background-color: #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    min-height: 70px;
+    z-index: 3; /* Ensure the footer stays on top */
+    position: relative;
+}
+
+/* Watch Trailer Button */
+.btn-watch-trailer,
+.btn-show-details {
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    width: 48%;
+    border: none;
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Watch Trailer Button Color */
+.btn-watch-trailer {
+    background-color: #007bff;
+}
+
+/* Show Details Button Color */
+.btn-show-details {
+    background-color: #ff5733;
+}
+
+    /* Hover Effects */
+    .btn-watch-trailer:hover,
+    .btn-show-details:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        opacity: 0.9;
+    }
+
+    /* Active Button State */
+    .btn-watch-trailer:active,
+    .btn-show-details:active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
