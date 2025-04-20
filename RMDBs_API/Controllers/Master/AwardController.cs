@@ -121,7 +121,7 @@ namespace RMDBs_API.Controllers.Master
                 return BadRequest(_response);
             }
             }
-
+        [Authorize]
           [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
